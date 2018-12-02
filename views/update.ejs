@@ -1,0 +1,39 @@
+<html>
+<title>update collection</title>
+
+<body>
+    <form id='details' method='POST' action='/updatecolltion' enctype='multipart/form-data'>
+    update collection
+    <br>
+    <br>
+    <input type="hidden" name="restaurant_id" value=<%=restaurant_id%>> 
+    Name:
+    <input type="text" name="name" value=<%=name%>>
+    <br> Borough:
+    <input type="text" name="borough" value=<%=borough%>>
+    <br> Cuisine:
+    <input type="text" name="cuisine" value=<%=cuisine%>>
+    <br>
+    <br>Address
+    <br> Building:
+    <input type="text" name="building" value=<%=building%>>
+    <br> Street:
+    <input type="text" name="street" value=<%=street%>>
+    <br> zipcode:
+    <input type="text" name="zipcode" value=<%=zipcode%>>
+    <br> GPS Coordinates (lon.):
+    <input type="text" name="lon" value=<%=lon%>>
+    <br> GPS Coordinates (lat.):
+    <input type="text" name="lat" value=<%=lat%>>
+    <br>
+    <br>Title:
+    <input type="text" name="title" minlength=1 value=<%=title%>>
+    <br>
+    <input type="file" name="filetoupload">
+    <br>
+  </form>
+  <button type="submit" form="details">Submit</button>
+  <button onclick="location.href='/'" type="button">Go Back</button>
+</body>
+
+</html>

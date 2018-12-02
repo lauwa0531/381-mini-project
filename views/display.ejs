@@ -1,0 +1,84 @@
+<html>
+<title>
+  <%=name%>
+</title>
+
+<body>
+  <center>
+    <h1>
+      <%=name%>
+    </h1>
+  </center>
+
+  <%if (photo) {%>
+    <img src="data:<%=photomimetype%>;base64,<%=photo%>">
+    <br>
+    <%}%>
+
+
+      Borough =
+      <%=borough%>
+        <br> Cuisine =
+        <%=cuisine%>
+          <br>
+          <br>Address:
+          <br> building =
+          <%=building%>
+            <br> street =
+            <%=street%>
+              <br> zipcode =
+              <%=zipcode%>
+                <br> GPS = [
+                <%=coord%>]
+                  <br>
+                  <br>Rating:
+                  <br>
+
+
+                  <%for (i = 0; i < grades.length; i++) {%>
+                    <%	name = 'na';%>
+                      <%for (y = 0; y < ac.length; y++) {%>
+                        <%if (ac[y]._id == grades[i].id) {%>
+                          <%name = ac[y].name;%>
+                            <%}%>
+                              <%}%>
+                                <%=grades[i].score%>(
+                                  <%=name%>)
+                                    <br>
+                                    <%}%>
+
+                                      <br>created by:
+                                      <%=ownername%>
+                                        <br>
+
+
+                                        <%if (coord[0]&&coord[1]) {%>
+                                          <a href=/googlemap?lat=<%=coord[1]%>&lon=<%=coord[0]%>&zoom=18>google map</a>
+                                          <br>
+                                          <%}%>
+
+
+                                            <form id=rate action="/rate" method="get">
+                                              <input type="hidden" name="restaurant_id" value=<%=restaurant_id%>>
+
+                                            </form>
+
+                                            <form id=update action="/update" method="get">
+                                              <input type="hidden" name="restaurant_id" value=<%=restaurant_id%>>
+                                              <input type="hidden" name="owner" value=<%=owner%>>
+
+                                            </form>
+
+                                            <form id=delete action="/delete" method="get">
+                                              <input type="hidden" name="restaurant_id" value=<%=restaurant_id%>>
+                                              <input type="hidden" name="owner" value=<%=owner%>>
+
+                                            </form>
+
+                                            <button type="submit" form="rate">rate</button>
+                                            <button type="submit" form="update">update</button>
+                                            <button type="submit" form="delete">delete</button>
+                                            <button onclick="location.href='/'" type="button">Go Back</button>
+</body>
+
+</html>

@@ -1,0 +1,15 @@
+<html>
+<title> rate </title>
+
+<body>
+  <form action="/rateupdate" method="get">
+    <input type="hidden" name="restaurant_id" value=<%=restaurant_id%>>
+    <br> Score:
+    <input type="number" name="score" value="" min="0" max="10">
+    <br>
+    <input type="submit" value="rate">
+  </form>
+  <button onclick="location.href='/'" type="button">Go Back</button>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+<html>
+<title>create collection</title>
+
+<body>
+  <form id='details' method='POST' action='/createcolltion' enctype='multipart/form-data'>
+    create collection
+    <br>
+    <br>
+    <input type="hidden" name="id" value=<%=restaurant_id%>> Name:
+    <input type="text" name="name" value="">
+    <br> Borough:
+    <input type="text" name="borough" value="">
+    <br> Cuisine:
+    <input type="text" name="cuisine" value="">
+    <br>
+    <br>Address
+    <br> Building:
+    <input type="text" name="building" value="">
+    <br> Street:
+    <input type="text" name="street" value="">
+    <br> zipcode:
+    <input type="text" name="zipcode" value="">
+    <br> GPS Coordinates (lon.):
+    <input type="text" name="lon" value="">
+    <br> GPS Coordinates (lat.):
+    <input type="text" name="lat" value="">
+    <br>
+    <br>Title:
+    <input type="text" name="title" minlength=1>
+    <br>
+    <input type="file" name="filetoupload">
+    <br>
+  </form>
+  <button type="submit" form="details">Submit</button>
+  <button onclick="location.href='/'" type="button">Go Back</button>
+</body>
+
+</html>

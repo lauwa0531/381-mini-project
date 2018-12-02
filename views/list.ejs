@@ -1,0 +1,30 @@
+<html>
+
+<head>
+  <title>Restaurant</title>
+</head>
+
+<body>
+  <H1>Restaurants</H1>
+  <H2>Showing
+    <%=jsonset.length%> document(s) Criteria:
+      <%=criteria%>
+  </H2>
+  <ol>
+    <% for (var i=0; i<jsonset.length; i++) { %>
+      <li>
+        <a href=/display?_id=<%=jsonset[i].restaurant_id%>>
+          <%=jsonset[i].name%>
+        </a>
+      </li>
+      <% } %>
+  </ol>
+
+  <button onclick="location.href='/logout'" type="button">logout</button>
+  <button onclick="location.href='/create'" type="button">create collection</button>
+  <button onclick="location.href='/search'" type="button">search</button>
+  <button onclick="location.href='/list'" type="button">search all</button>
+
+</body>
+
+</html>
