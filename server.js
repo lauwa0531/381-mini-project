@@ -189,37 +189,32 @@ app.get('/create', function (req, res) {//ejs ed
 		MongoClient.connect(mongourl, function (err, db) {
 			assert.equal(err, null);
 			console.log('Connected to MongoDB\n');
+			
+			/*
+			findDistinctrestaurantid(db, function (rid) {
+				db.close();
+				console.log('Disconnected MongoDB\n');
+				var id = 1;
+				while(1){
+					if(!(rid[i]. = id)){
+						id = rid[i];
+						break;
+					}
+					id++
+				}
+				res.render("createcollection.ejs", { restaurant_id: id });
+				console.log(id+'\n');
+				res.end();
+			});
+			*/
+			
 			findRestaurants(db, {}, function (restaurants) {
 				db.close();
 				console.log('Disconnected MongoDB\n');
 				res.render("createcollection.ejs", { restaurant_id: (restaurants.length + 1) });
 				res.end();
-				/*
-				res.writeHead(200, { "Content-Type": "text/html" });
-				res.write('<html><title>create collection</title>');
-				res.write('<body>');
-				res.write("<form id='details' method='POST' action='/createcolltion' enctype='multipart/form-data'>");
-				res.write('create collection<br><br>');
-				res.write('<input type="hidden" name="id" value="' + (restaurants.length + 1) + '">');
-				res.write('Name: <input type="text" name="name" value="" ><br>');
-				res.write('Borough: <input type="text" name="borough" value="" ><br>');
-				res.write('Cuisine: <input type="text" name="cuisine" value="" ><br>');
-				res.write('<br>Address<br>')
-				res.write('Building: <input type="text" name="building" value="" ><br>');
-				res.write('Street: <input type="text" name="street" value="" ><br>');
-				res.write('zipcode: <input type="text" name="zipcode" value="" ><br>');
-				res.write('GPS Coordinates (lon.): <input type="text" name="lon" value="" ><br>');
-				res.write('GPS Coordinates (lat.): <input type="text" name="lat" value="" ><br>');
-				res.write('<br>Title: <input type="text" name="title" minlength=1><br>');
-				res.write('<input type="file" name="filetoupload"><br>');
-				res.write('</form>');
-				res.write('<script>');
-				res.write('function goBack() {window.history.back();}');
-				res.write('</script>');
-				res.write('<button type="submit" form="details" >Submit</button>');
-				res.end('<button onclick="goBack()">Go Back</button>');
-				*/
 			});
+		
 		});
 	}
 });
@@ -242,7 +237,7 @@ app.post('/createcolltion', function (req, res) {// no need ejs
 				if (fields.cuisine) new_r['cuisine'] = fields.cuisine;
 				//if (req.body.photo) new_r['photo'] = req.body.photo;
 				//if (req.body.photomimetype) new_r['photomimetype'] = req.body.photomimetype;
-				if (fields.building || fields.street) {
+				if (fields.building || fields.street||fields.lon||fields.lat) {
 					var address = {};
 					if (fields.street) address['street'] = fields.street;
 					if (fields.building) address['building'] = fields.building;
@@ -310,7 +305,7 @@ app.get('/display', function (req, res) {//ejs ed
 				borough = '';
 				cuisine = '';
 				if (doc.borough) borough = doc.borough;
-				if (doc.borough) cuisine = doc.cuisine;
+				if (doc.cuisine) cuisine = doc.cuisine;
 				/*
 				res.write('Borough = ' + borough + '<br>');
 				res.write('Cuisine = ' + cuisine + '<br>');
@@ -627,7 +622,8 @@ app.post('/updatecolltion', function (req, res) {//no need ejs
 				if (fields.name) new_r['name'] = fields.name;
 				if (fields.borough) new_r['borough'] = fields.borough;
 				if (fields.cuisine) new_r['cuisine'] = fields.cuisine;
-				if (fields.building || fields.street) {
+				console.log(fields.cuisine);
+				if (fields.building || fields.street||fields.lon||fields.lat) {
 					var address = {};
 					if (fields.street) address['street'] = fields.street;
 					if (fields.building) address['building'] = fields.building;
@@ -876,6 +872,13 @@ function findDistinctcuisine(db, callback) {
 	});
 }
 
+function findDistinctrestaurantid(db, callback) {
+	db.collection('restaurant').distinct("restaurant_id", function (err, result) {
+		console.log(result);
+		callback(result);
+	});
+}
+
 app.listen(process.env.PORT || 8099);
 
 app.post("/api/restaurant/", function (req, res) {
@@ -883,9 +886,36 @@ app.post("/api/restaurant/", function (req, res) {
 	MongoClient.connect(mongourl, function (err, db) {
 		assert.equal(err, null);
 		console.log('Connected to MongoDB\n');
+		/*
+			findDistinctrestaurantid(db, function (rid) {
+				db.close();
+				console.log('Disconnected MongoDB\n');
+				var id = 1;
+				while(1){
+					if(!(rid[i] = id)){
+						id = rid[i];
+						break;
+					}
+					id++
+				}
+				req.body.restaurant_id = id;
+				req.body.grades = [];
+				console.log(id+'\n');
+				res.end();
+			});
+			*/
 		findRestaurants(db, {}, function (restaurants) {
 			req.body.restaurant_id = (restaurants.length + 1).toString();
 			req.body.grades = [];
+			if(req.body.user){
+				for (y = 0; y < ac.length; y++) {
+					if (req.body.user == ac[y].name) {
+						id = ac[y]._id;
+					}
+				}
+				req.body.owner = id;
+				req.body.user = null;
+			}
 			insertRestaurant(db, req.body, function (result) {
 				db.close();
 				console.log('Disconnected to MongoDB\n');
@@ -903,6 +933,7 @@ app.get('/api/restaurant/:kind/:value', function (req, res) {
 
 		criteria[req.params.kind] = req.params.value;
 		console.log(JSON.stringify(criteria));
+		
 		findRestaurants(db, criteria, function (restaurants) {
 			db.close();
 			console.log('Disconnected MongoDB\n');
